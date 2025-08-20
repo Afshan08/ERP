@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% load static %} 
+
+{% block title%}
+Integrety Error
+{% endblock %}
+
+{%block content%}
+<p>
+These are already taken area codes:</br>{{registered_areas | safe}}<br>
+Want to make a new area code: <a href={% url 'area_form' %}>click here</a>
+
+</p>
+{% endblock%}

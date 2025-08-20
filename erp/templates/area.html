@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Area Form - ERP System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="page-title">Area Forms</h2>
+    <div class="form-container">
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if message %}
+                <div class="alert alert-success">
+                    {{ message |striptags }}
+                </div>
+            {% endif %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.error %}
+                        <div class="text-danger">
+                            {{ field.error|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            {% if errors %}
+                <div class="alert alert-danger">
+                    {{ errors |striptags }}
+                </div>
+            {% endif %}
+            
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
