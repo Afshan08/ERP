@@ -127,6 +127,14 @@ body {
     border-color: #667eea;
 }
 
+/* Help text styling */
+.helptext {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+    display: block;
+}
+
 /* Error and Success Messages */
 .alert {
     padding: 1rem;

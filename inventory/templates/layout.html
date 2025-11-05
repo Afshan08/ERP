@@ -1,0 +1,109 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}ERP System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/professional-forms.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    {% block styles %} {% endblock %} {% block scripts %} {% endblock %}
+  </head>
+  <body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-navbar">
+      <a href="/" class="logo">ERP System</a>
+      <ul class="nav-menu">
+        <li><a href="/admin/">Admin</a></li>
+      </ul>
+    </nav>
+
+    <!-- Vertical Left Navigation Bar -->
+    <nav class="vertical-navbar">
+      <ul class="nav-menu">
+        <li class="nav-group">
+          <span class="group-toggle"
+            >Inventory <span class="arrow">▶</span></span
+          >
+          <ul class="group-links">
+            <li class="nav-group">
+              <span class="group-toggle"
+                >Setup <span class="arrow">▶</span></span
+              >
+              <ul class="group-links">
+                <li>
+                  <a href="{% url 'customer_form' %}">Customer Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'supplier_form' %}">Supplier Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'purchase_form' %}">Purchase Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'inv_category' %}">Inventory Category</a>
+                </li>
+                <li>
+                  <a href="{% url 'area_form' %}">Area Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'department_definition' %}"
+                    >Department Definition</a
+                  >
+                </li>
+                <li>
+                  <a href="{% url 'item_definition' %}">Item Definition</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group">
+              <span class="group-toggle"
+                >Transactions <span class="arrow">▶</span></span
+              >
+              <ul class="group-links">
+                <li>
+                  <a href="{% url 'requisition_form' %}">Requisition Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'purchase_order_form' %}">Purchase Order Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'receipttransaction_form' %}">Receipt Transaction Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'purchasevoucher_form' %}">Purchase Voucher Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'lottransaction_form' %}">Lot Transaction Form</a>
+                </li>
+                <li>
+                  <a href="{% url 'issuetransaction_form' %}">Issue Transaction Form</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">{% block content %} {% endblock %}</div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggles = document.querySelectorAll(".group-toggle");
+        toggles.forEach((toggle) => {
+          toggle.addEventListener("click", function (event) {
+            event.stopPropagation();
+            const group = this.parentElement;
+            group.classList.toggle("expanded");
+            // Also toggle nested groups if any
+            const nestedGroups = group.querySelectorAll(".nav-group");
+            nestedGroups.forEach((nestedGroup) => {
+              nestedGroup.classList.remove("expanded");
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

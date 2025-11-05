@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% load %}
+{% block title %}Item Definition Form{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="page-title">Item Definition Form</h2>
+  {% if message %}
+  <div class="alert alert-success">{{ message }}</div>
+  {% endif %}
+  {% if errors %}
+  <div class="alert alert-danger">{{ errors }}</div>
+  {% endif %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="submit-button">Save</button>
+  </form>
+</div>
+{% endblock %}

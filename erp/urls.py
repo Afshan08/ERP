@@ -18,11 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("area_form", views.area_form ,name="area_form"),
-    path("", views.home, name="home_page"),
-    path("supplier_form", views.supplier_form, name="supplier_form"),
-    path("customer_form", views.customer_form, name="customer_form")
+    path("", views.home, name="home"),
+    path("inventory/", include('inventory.urls')),
 
 ]
