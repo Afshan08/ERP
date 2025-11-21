@@ -17,7 +17,13 @@ class PurchaseOrderForm(forms.ModelForm):
             'delivery_at',
             'order_by',
             'condition',
-            'freight'
+            'freight',
+            'quantity',
+            'rate',
+            'amount',
+            'sales_tax',
+            'discount',
+            'requisition_number'
         ]
         widgets = {
             'po_number': forms.TextInput(attrs={
@@ -74,6 +80,35 @@ class PurchaseOrderForm(forms.ModelForm):
                 'step': '0.01',
                 'placeholder': '0.00'
             }),
+            'quantity': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'rate': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'sales_tax': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'discount': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'requisition_number': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter requisition number'
+            }),
         }
         labels = {
             'po_number': 'PO Number',
@@ -88,7 +123,13 @@ class PurchaseOrderForm(forms.ModelForm):
             'delivery_at': 'Delivery At',
             'order_by': 'Order By',
             'condition': 'Condition',
-            'freight': 'Freight'
+            'freight': 'Freight',
+            'quantity': 'Quantity',
+            'rate': 'Rate',
+            'amount': 'Amount',
+            'sales_tax': 'Sales Tax',
+            'discount': 'Discount',
+            'requisition_number': 'Requisition Number'
         }
         help_texts = {
             'po_number': 'Unique purchase order number',
@@ -103,5 +144,11 @@ class PurchaseOrderForm(forms.ModelForm):
             'delivery_at': 'Delivery location',
             'order_by': 'Person who placed the order',
             'condition': 'Special conditions',
-            'freight': 'Freight cost'
+            'freight': 'Freight cost',
+            'quantity': 'Quantity ordered',
+            'rate': 'Rate per unit',
+            'amount': 'Total amount',
+            'sales_tax': 'Sales tax amount',
+            'discount': 'Discount amount',
+            'requisition_number': 'Requisition number'
         }

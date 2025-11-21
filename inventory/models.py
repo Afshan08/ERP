@@ -462,7 +462,7 @@ class ItemDefinition(models.Model):
     ]
     item_code = models.CharField(unique=True, max_length=50)
     item_name = models.CharField(max_length=250)
-    specification = models.CharField()
+    specification = models.CharField(null=True, blank=True)
     base_item = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="variants")
     item_category = models.ForeignKey('INVcategory', on_delete=models.CASCADE, related_name="items")
     salestax_type = models.CharField(max_length=50, choices=SALESTAX_CHOICES)
@@ -514,6 +514,12 @@ class PurchaseOrder(models.Model):
     order_by = models.CharField(max_length=100)
     condition = models.TextField(blank=True, null=True)
     freight = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    sales_tax = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    requisition_number = models.CharField(max_length=50, blank=True, null=True)
     
     class Meta:
         db_table = "purchase_order"
@@ -541,6 +547,12 @@ class ReceiptTransaction(models.Model):
     delivery_challan_no = models.CharField(max_length=100, blank=True, null=True)  # or FK if modeled
     supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE)
     client_po = models.ForeignKey('PurchaseOrder', on_delete=models.SET_NULL, null=True, blank=True, related_name='receipt_client_po')
+    po = models.ForeignKey('PurchaseOrder', on_delete=models.SET_NULL, null=True, blank=True, related_name='grn_po')
+    item = models.ForeignKey('ItemDefinition', on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    st = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     remarks = models.TextField(blank=True, null=True)
     grir = models.CharField(max_length=100)
@@ -552,13 +564,13 @@ class ReceiptTransaction(models.Model):
 
         
     class Meta:
-        db_table = "receipt_transaction"
-        verbose_name = 'Receipt Transaction'
-        verbose_name_plural = 'Receipt Transactions'
+        db_table = "grn"
+        verbose_name = 'GRN'
+        verbose_name_plural = 'GRNs'
 
     
     def __str__(self):
-        return f"Receipt {self.transaction_no}"
+        return f"GRN {self.transaction_no}"
     
 
 class PurchaseVoucher(models.Model):

@@ -1,7 +1,7 @@
 from django import forms
 from .models import ReceiptTransaction
 
-class ReceiptTransactionForm(forms.ModelForm):
+class GRNForm(forms.ModelForm):
     class Meta:
         model = ReceiptTransaction
         fields = [
@@ -12,6 +12,12 @@ class ReceiptTransactionForm(forms.ModelForm):
             'delivery_challan_no',
             'supplier',
             'client_po',
+            'po',
+            'item',
+            'quantity',
+            'rate',
+            'amount',
+            'st',
             'remarks',
             'grir',
             'gpi_status',
@@ -58,6 +64,32 @@ class ReceiptTransactionForm(forms.ModelForm):
             'gpo': forms.Select(attrs={
                 'class': 'form-control'
             }),
+            'po': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'item': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'quantity': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'rate': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
+            'st': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.01',
+                'placeholder': '0.00'
+            }),
         }
         labels = {
             'transaction_no': 'Transaction Number',
@@ -67,6 +99,12 @@ class ReceiptTransactionForm(forms.ModelForm):
             'delivery_challan_no': 'Delivery Challan Number',
             'supplier': 'Supplier',
             'client_po': 'Client PO',
+            'po': 'PO',
+            'item': 'Item',
+            'quantity': 'Quantity',
+            'rate': 'Rate',
+            'amount': 'Amount',
+            'st': 'ST',
             'remarks': 'Remarks',
             'grir': 'GRIR',
             'gpi_status': 'GPI Status',
@@ -80,6 +118,12 @@ class ReceiptTransactionForm(forms.ModelForm):
             'delivery_challan_no': 'Delivery challan number',
             'supplier': 'Supplier involved',
             'client_po': 'Client purchase order',
+            'po': 'Purchase order',
+            'item': 'Item definition',
+            'quantity': 'Quantity received',
+            'rate': 'Rate per unit',
+            'amount': 'Total amount',
+            'st': 'Sales tax',
             'remarks': 'Additional remarks',
             'grir': 'GRIR details',
             'gpi_status': 'GPI status',

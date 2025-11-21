@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Lot Transaction Form - ERP System{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/lookup-modal.css' %}">
 <div class="container">
   <h2 class="page-title">Lot Transaction Form</h2>
   <div class="form-container" style="max-height: 70vh; overflow-y: auto; padding-right: 15px;">
@@ -21,14 +22,34 @@
       {% for field in form %}
       <div class="form-group">
         <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
+        <div style="display: flex; gap: 10px; align-items: center;">
+          {{ field }}
+          {% if field.name == 'customer' %}
+          <button type="button" class="btn btn-primary btn-sm" data-lookup-model="customer" title="Search Customer">
+            <i class="fa fa-search"></i>
+          </button>
+          {% endif %}
+        </div>
         {% if field.errors %}
         <div class="text-danger">{{ field.errors|striptags }}</div>
         {% endif %}
       </div>
       {% endfor %}
-      <button type="submit" class="submit-button">Submit</button>
+      <button type="submit" class="submit-button"><i class="fas fa-tags"></i> Submit</button>
     </form>
   </div>
 </div>
+
+<script src="{% static 'css/lookup-modal.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new LookupModal({
+      endpoint: '/inventory/lookup-data/',
+      model: 'customer',
+      fieldId: 'id_customer',
+      columns: ['id', 'customer_name', 'contact_person_name', 'contact_phone'],
+      title: 'Search Customer'
+    });
+  });
+</script>
 {% endblock %}

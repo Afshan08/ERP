@@ -12,7 +12,7 @@ from .item_definition_form import ItemDefinitionForm
 from .models import AreaForm, Supplier, Customer, Purchase, DepartmentDefinition, Requisition, PurchaseOrder
 from .requisition_form import RequisitionForm
 from .purchase_order_form import PurchaseOrderForm
-from .receipttransaction_form import ReceiptTransactionForm
+from .receipttransaction_form import GRNForm
 from .purchasevoucher_form import PurchaseVoucherForm
 from .lottransaction_form import LotTransactionForm
 from .issuetransaction_form import IssueTransactionForm
@@ -244,14 +244,14 @@ def purchase_order_form(request):
     })
 
 def receipttransaction_form(request):
-    form = ReceiptTransactionForm()
+    form = GRNForm()
     message = None
     error = None
     if request.method == "POST":
-        form = ReceiptTransactionForm(request.POST)
+        form = GRNForm(request.POST)
         if form.is_valid():
             receipt = form.save()
-            form = ReceiptTransactionForm()
+            form = GRNForm()
             message = f"Receipt Transaction {receipt.transaction_no} successfully created."
         else:
             error = "Please correct the errors below."
@@ -318,3 +318,62 @@ def issuetransaction_form(request):
         "message": message,
         "errors": error,
     })
+
+
+# Lookup views for search functionality
+def lookup_supplier(request):
+    """Return supplier data for lookup modal"""
+    suppliers = Supplier.objects.all().values(
+        'id', 
+        'supplier_name', 
+        'contact_person_name', 
+        'contact_email', 
+        'contact_phone'
+    )
+    return JsonResponse(list(suppliers), safe=False)
+
+
+def lookup_requisition(request):
+    """Return requisition data for lookup modal"""
+    requisitions = Requisition.objects.select_related('department').all()
+    data = [{
+        'id': req.id,
+        'doc_number': req.doc_number,
+        'requisition_by': req.requisition_by,
+        'department_name': req.department.name
+    } for req in requisitions]
+    return JsonResponse(data, safe=False)
+
+
+def lookup_area(request):
+    """Return area data for lookup modal"""
+    areas = AreaForm.objects.all().values(
+        'id',
+        'areacode',
+        'areaname',
+        'area_description'
+    )
+    return JsonResponse(list(areas), safe=False)
+
+
+def lookup_po(request):
+    """Return purchase order data for lookup modal"""
+    pos = PurchaseOrder.objects.all().values(
+        'id',
+        'po_number',
+        'supplier',
+        'po_date'
+    )
+    return JsonResponse(list(pos), safe=False)
+
+
+def lookup_item(request):
+    """Return item data for lookup modal"""
+    from .models import ItemDefinition
+    items = ItemDefinition.objects.all().values(
+        'id',
+        'item_code',
+        'item_description',
+        'category'
+    )
+    return JsonResponse(list(items), safe=False)

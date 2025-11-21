@@ -32,5 +32,12 @@ urlpatterns = [
     path("receipt_transaction", views.receipttransaction_form, name="receipttransaction_form"),
     path("purchase_voucher", views.purchasevoucher_form, name="purchasevoucher_form"),
     path("lot_transaction", views.lottransaction_form, name="lottransaction_form"),
-    path("issue_transaction", views.issuetransaction_form, name="issuetransaction_form")
+    path("issue_transaction", views.issuetransaction_form, name="issuetransaction_form"),
+    
+    # Lookup URLs for search functionality
+    path("lookup_supplier/", views.lookup_supplier, name="lookup_supplier"),
+    path("lookup_requisition/", views.lookup_requisition, name="lookup_requisition"),
+    path("lookup_area/", views.lookup_area, name="lookup_area"),
+    path("lookup_po/", views.lookup_po, name="lookup_po"),
+    path("lookup_item/", views.lookup_item, name="lookup_item"),
 ]
