@@ -45,32 +45,34 @@
         {% endif %}
       </div>
       {% endfor %}
-      <button type="submit" class="submit-button"><i class="fas fa-arrow-right-from-bracket"></i> Submit</button>
+      {% include 'form_actions.html' with save_label="Submit Issue" %}
     </form>
   </div>
 </div>
 
-<script src="{% static 'css/lookup-modal.js' %}"></script>
+<script src="{% static 'js/lookup-modal.js' %}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    new LookupModal({
-      endpoint: '/inventory/lookup-data/',
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lookupModals = window.lookupModals || {};
+
+    window.lookupModals.area = new LookupModal({
+      endpoint: '/inventory/lookup_area/',
       model: 'area',
       fieldId: 'id_area',
       columns: ['id', 'areacode', 'areaname'],
       title: 'Search Area'
     });
-    
-    new LookupModal({
-      endpoint: '/inventory/lookup-data/',
+
+    window.lookupModals.department = new LookupModal({
+      endpoint: '/inventory/lookup_department/',
       model: 'department',
       fieldId: 'id_department',
       columns: ['id', 'name'],
       title: 'Search Department'
     });
-    
-    new LookupModal({
-      endpoint: '/inventory/lookup-data/',
+
+    window.lookupModals.customer = new LookupModal({
+      endpoint: '/inventory/lookup_customer/',
       model: 'customer',
       fieldId: 'id_customer',
       columns: ['id', 'customer_name', 'contact_person_name', 'contact_phone'],

@@ -6,15 +6,18 @@ class SupplierForm(forms.Form):
     """Comprehensive form for managing supplier information in the ERP system."""
     
     # Basic Information
-    supplier_id = forms.IntegerField(
-        label="Supplier ID",
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Give an id to the supplier'
-        }),
+    # Basic Information
+    supplier_code = forms.CharField(
+        label="Supplier Code",
         required=False,
-        help_text="Leave blank for new suppliers"
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly',
+            'placeholder': 'Auto-generated (e.g., SUP-0001)'
+        }),
+        help_text="System generated unique identifier"
     )
+
     
     supplier_name = forms.CharField(
         label="Supplier Name",

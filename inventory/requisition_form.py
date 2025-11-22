@@ -13,7 +13,8 @@ class RequisitionForm(forms.ModelForm):
         widgets = {
             'doc_number': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter document number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., REQ-0001)'
             }),
             'department': forms.Select(attrs={
                 'class': 'form-control'

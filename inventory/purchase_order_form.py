@@ -8,7 +8,7 @@ class PurchaseOrderForm(forms.ModelForm):
             'po_number',
             'po_date',
             'po_type',
-            'station_code',
+            'area',
             'supplier',
             'remarks',
             'terms_conditions',
@@ -22,13 +22,13 @@ class PurchaseOrderForm(forms.ModelForm):
             'rate',
             'amount',
             'sales_tax',
-            'discount',
-            'requisition_number'
+            'discount'
         ]
         widgets = {
             'po_number': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter PO number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., PO-0001)'
             }),
             'po_date': forms.DateInput(attrs={
                 'class': 'form-control',
@@ -38,9 +38,12 @@ class PurchaseOrderForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Enter PO type'
             }),
-            'station_code': forms.TextInput(attrs={
+            'po_type': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter station code'
+                'placeholder': 'Enter PO type'
+            }),
+            'area': forms.Select(attrs={
+                'class': 'form-control'
             }),
             'supplier': forms.Select(attrs={
                 'class': 'form-control'
@@ -105,16 +108,12 @@ class PurchaseOrderForm(forms.ModelForm):
                 'step': '0.01',
                 'placeholder': '0.00'
             }),
-            'requisition_number': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter requisition number'
-            }),
         }
         labels = {
             'po_number': 'PO Number',
             'po_date': 'PO Date',
             'po_type': 'PO Type',
-            'station_code': 'Station Code',
+            'area': 'Area',
             'supplier': 'Supplier',
             'remarks': 'Remarks',
             'terms_conditions': 'Terms and Conditions',
@@ -128,14 +127,13 @@ class PurchaseOrderForm(forms.ModelForm):
             'rate': 'Rate',
             'amount': 'Amount',
             'sales_tax': 'Sales Tax',
-            'discount': 'Discount',
-            'requisition_number': 'Requisition Number'
+            'discount': 'Discount'
         }
         help_texts = {
             'po_number': 'Unique purchase order number',
             'po_date': 'Date of the purchase order',
             'po_type': 'Type of purchase order',
-            'station_code': 'Station code',
+            'area': 'Operational area',
             'supplier': 'Supplier for the purchase order',
             'remarks': 'Additional remarks',
             'terms_conditions': 'Terms and conditions of the order',
@@ -149,6 +147,5 @@ class PurchaseOrderForm(forms.ModelForm):
             'rate': 'Rate per unit',
             'amount': 'Total amount',
             'sales_tax': 'Sales tax amount',
-            'discount': 'Discount amount',
-            'requisition_number': 'Requisition number'
+            'discount': 'Discount amount'
         }

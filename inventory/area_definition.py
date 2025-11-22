@@ -6,15 +6,15 @@ from django.core.exceptions import ValidationError
 class Area(forms.Form):
     """Form for managing geographic/operational areas in the ERP system."""
     
-    area_code = forms.IntegerField(
+    area_code = forms.CharField(
         label="Area Code",
-        widget=forms.NumberInput(attrs={
+        widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Enter unique area code (1-9999)'
+            'readonly': 'readonly',
+            'placeholder': 'Auto-generated (e.g., AREA-0001)'
         }),
-        min_value=1,
-        max_value=9999,
-        help_text="Unique numeric identifier for the area (1-9999)"
+        required=False,
+        help_text="System generated unique identifier"
     )
     
     area_name = forms.CharField(

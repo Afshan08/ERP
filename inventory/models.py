@@ -19,6 +19,14 @@ class AreaForm(models.Model):
         help_text="Unique numeric identifier for the area (1-9999)"
     )
     
+    area_code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Auto-generated code (e.g., AREA-0001)"
+    )
+    
     areaname = models.CharField(
         max_length=100,
         help_text="Descriptive name for the operational area"
@@ -97,6 +105,14 @@ class Supplier(models.Model):
         blank=True,
         null=True,
         help_text="Auto-generated if new"
+    )
+    
+    supplier_code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Auto-generated code (e.g., SUP-0001)"
     )
     
     supplier_name = models.CharField(
@@ -325,6 +341,14 @@ class Customer(models.Model):
         help_text="Auto-generated if new"
     )
     
+    customer_code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        help_text="Auto-generated code (e.g., CUST-0001)"
+    )
+    
     customer_name = models.CharField(
         max_length=200,
         help_text="Official registered business or individual name"
@@ -497,14 +521,14 @@ class Requisition(models.Model):
     
     
     def __str__(self):
-        return f"Requisition by {self.requisition_by}"
+        return f"{self.doc_number} - {self.requisition_by}"
  
     
 class PurchaseOrder(models.Model):
     po_number = models.CharField(max_length=50, unique=True)
     po_date = models.DateField()
     po_type = models.CharField(max_length=50)
-    station_code = models.CharField(max_length=50)
+    area = models.ForeignKey("AreaForm", on_delete=models.SET_NULL, null=True, blank=True)
     supplier = models.ForeignKey("Supplier", on_delete=models.CASCADE)
     remarks = models.TextField(blank=True, null=True)
     terms_conditions = models.TextField(blank=True, null=True)

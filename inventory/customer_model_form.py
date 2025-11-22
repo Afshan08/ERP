@@ -12,9 +12,10 @@ class CustomerModelForm(forms.ModelForm):
         exclude = ['created_at', 'updated_at']
         
         widgets = {
-            'customer_id': forms.NumberInput(attrs={
+            'customer_code': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Give an id to the customer'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., CUST-0001)'
             }),
             'customer_name': forms.TextInput(attrs={
                 'class': 'form-control',

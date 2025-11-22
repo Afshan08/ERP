@@ -19,7 +19,8 @@ class ItemDefinitionForm(forms.ModelForm):
         widgets = {
             'item_code': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter item code'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., ITEM-0001)'
             }),
             'item_name': forms.TextInput(attrs={
                 'class': 'form-control',

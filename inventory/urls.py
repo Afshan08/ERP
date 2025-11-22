@@ -38,6 +38,9 @@ urlpatterns = [
     path("lookup_supplier/", views.lookup_supplier, name="lookup_supplier"),
     path("lookup_requisition/", views.lookup_requisition, name="lookup_requisition"),
     path("lookup_area/", views.lookup_area, name="lookup_area"),
-    path("lookup_po/", views.lookup_po, name="lookup_po"),
     path("lookup_item/", views.lookup_item, name="lookup_item"),
+    path("lookup_purchase_order/", views.lookup_purchase_order, name="lookup_purchase_order"),
+    path("lookup_customer/", views.lookup_customer, name="lookup_customer"),
+    path("lookup_department/", views.lookup_department, name="lookup_department"),
+    path("lookup_inventory_category/", views.lookup_inventory_category, name="lookup_inventory_category"),
 ]

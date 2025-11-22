@@ -17,6 +17,8 @@ from .purchasevoucher_form import PurchaseVoucherForm
 from .lottransaction_form import LotTransactionForm
 from .issuetransaction_form import IssueTransactionForm
 from sqlite3 import IntegrityError
+from .utils import generate_code
+from .models import ItemDefinition, ReceiptTransaction, IssueTransaction, LotTransaction, PurchaseVoucher
 
 def area_form(request):
     if request.method == 'POST':
@@ -30,7 +32,10 @@ def area_form(request):
             status = form.cleaned_data['status']
             
             
+            
             try:
+                if not area_code:
+                    area_code = generate_code(AreaForm, 'AREA', 'area_code')
                 area = AreaForm.objects.create(areacode=area_code, areaname=area_name, area_description=area_description, status=status)
                 form = Area()
                 message = f"Area {area_name} successfully created. "
@@ -43,7 +48,10 @@ def area_form(request):
                 error = f"The area code was taken for {taken_area.areaname}"
           
     else:
-        form = Area()
+        initial_data = {}
+        next_code = generate_code(AreaForm, 'AREA', 'area_code')
+        initial_data['area_code'] = next_code
+        form = Area(initial=initial_data)
         message = None
         error = None
 
@@ -63,7 +71,12 @@ def home(request):
 
 
 def supplier_form(request):
-    form = SupplierForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(Supplier, 'SUP', 'supplier_code')
+        initial_data['supplier_code'] = next_code
+        
+    form = SupplierForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -87,6 +100,8 @@ def supplier_form(request):
                 status=form.cleaned_data['status'],
                 is_preferred=form.cleaned_data['is_preferred']
             )
+            if not supplier.supplier_code:
+                supplier.supplier_code = generate_code(Supplier, 'SUP', 'supplier_code')
             supplier.save()
             form = SupplierForm()  # Reset form after successful save
             message = f"Supplier {supplier.supplier_name} successfully created."
@@ -102,14 +117,22 @@ def supplier_form(request):
         
         
 def customer_form(request):
-    form = CustomerModelForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(Customer, 'CUST', 'customer_code')
+        initial_data['customer_code'] = next_code
+
+    form = CustomerModelForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
         form = CustomerModelForm(request.POST)
         if form.is_valid():
             # Process the valid form data using ModelForm's save method
-            customer = form.save()
+            customer = form.save(commit=False)
+            if not customer.customer_code:
+                customer.customer_code = generate_code(Customer, 'CUST', 'customer_code')
+            customer.save()
             form = CustomerModelForm()  # Reset form after successful save
             message = f"Customer {customer.customer_name} successfully created."
         else:
@@ -186,7 +209,12 @@ def inventory_category(request):
 
 
 def item_definition_form(request):
-    form = ItemDefinitionForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(ItemDefinition, 'ITEM', 'item_code')
+        initial_data['item_code'] = next_code
+        
+    form = ItemDefinitionForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -206,7 +234,12 @@ def item_definition_form(request):
     })
 
 def requisition_form(request):
-    form = RequisitionForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(Requisition, 'REQ', 'doc_number')
+        initial_data['doc_number'] = next_code
+        
+    form = RequisitionForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -225,7 +258,12 @@ def requisition_form(request):
     })
 
 def purchase_order_form(request):
-    form = PurchaseOrderForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(PurchaseOrder, 'PO', 'po_number')
+        initial_data['po_number'] = next_code
+        
+    form = PurchaseOrderForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -244,7 +282,12 @@ def purchase_order_form(request):
     })
 
 def receipttransaction_form(request):
-    form = GRNForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(ReceiptTransaction, 'GRN', 'transaction_no')
+        initial_data['transaction_no'] = next_code
+        
+    form = GRNForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -263,7 +306,12 @@ def receipttransaction_form(request):
     })
 
 def purchasevoucher_form(request):
-    form = PurchaseVoucherForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(PurchaseVoucher, 'PV', 'transaction_no')
+        initial_data['transaction_no'] = next_code
+        
+    form = PurchaseVoucherForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -282,7 +330,12 @@ def purchasevoucher_form(request):
     })
 
 def lottransaction_form(request):
-    form = LotTransactionForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(LotTransaction, 'LOT', 'doc_no')
+        initial_data['doc_no'] = next_code
+        
+    form = LotTransactionForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -301,7 +354,12 @@ def lottransaction_form(request):
     })
 
 def issuetransaction_form(request):
-    form = IssueTransactionForm()
+    initial_data = {}
+    if request.method == "GET":
+        next_code = generate_code(IssueTransaction, 'ISS', 'transaction_no')
+        initial_data['transaction_no'] = next_code
+        
+    form = IssueTransactionForm(initial=initial_data)
     message = None
     error = None
     if request.method == "POST":
@@ -356,24 +414,56 @@ def lookup_area(request):
     return JsonResponse(list(areas), safe=False)
 
 
-def lookup_po(request):
+def lookup_item(request):
+    """Return item data for lookup modal"""
+    from .models import ItemDefinition
+    items = ItemDefinition.objects.select_related('item_category').all().values(
+        'id',
+        'item_code',
+        'item_name',
+        'specification',
+        'unit_of_measure',
+        'item_category__name'
+    )
+    return JsonResponse(list(items), safe=False)
+
+
+def lookup_purchase_order(request):
     """Return purchase order data for lookup modal"""
-    pos = PurchaseOrder.objects.all().values(
+    pos = PurchaseOrder.objects.select_related('supplier', 'requisition').all().values(
         'id',
         'po_number',
-        'supplier',
-        'po_date'
+        'supplier__supplier_name',
+        'requisition__doc_number'
     )
     return JsonResponse(list(pos), safe=False)
 
 
-def lookup_item(request):
-    """Return item data for lookup modal"""
-    from .models import ItemDefinition
-    items = ItemDefinition.objects.all().values(
+def lookup_customer(request):
+    """Return customer data for lookup modal"""
+    customers = Customer.objects.all().values(
         'id',
-        'item_code',
-        'item_description',
-        'category'
+        'customer_name',
+        'contact_person_name',
+        'contact_phone'
     )
-    return JsonResponse(list(items), safe=False)
+    return JsonResponse(list(customers), safe=False)
+
+
+def lookup_department(request):
+    """Return department data for lookup modal"""
+    departments = DepartmentDefinition.objects.all().values(
+        'id',
+        'name',
+        'description'
+    )
+    return JsonResponse(list(departments), safe=False)
+
+
+def lookup_inventory_category(request):
+    """Return inventory category data for lookup modal"""
+    categories = INVCategory.objects.all().values(
+        'id',
+        'name'
+    )
+    return JsonResponse(list(categories), safe=False)

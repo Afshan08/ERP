@@ -35,16 +35,17 @@
         {% endif %}
       </div>
       {% endfor %}
-      <button type="submit" class="submit-button"><i class="fas fa-tags"></i> Submit</button>
+      {% include 'form_actions.html' with save_label="Submit Lot Transaction" %}
     </form>
   </div>
 </div>
 
-<script src="{% static 'css/lookup-modal.js' %}"></script>
+<script src="{% static 'js/lookup-modal.js' %}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    new LookupModal({
-      endpoint: '/inventory/lookup-data/',
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lookupModals = window.lookupModals || {};
+    window.lookupModals.customer = new LookupModal({
+      endpoint: '/inventory/lookup_customer/',
       model: 'customer',
       fieldId: 'id_customer',
       columns: ['id', 'customer_name', 'contact_person_name', 'contact_phone'],

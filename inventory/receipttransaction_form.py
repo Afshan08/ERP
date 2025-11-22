@@ -26,7 +26,8 @@ class GRNForm(forms.ModelForm):
         widgets = {
             'transaction_no': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter transaction number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., GRN-0001)'
             }),
             'transaction_date': forms.DateInput(attrs={
                 'class': 'form-control',

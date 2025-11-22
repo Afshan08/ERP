@@ -1,237 +1,202 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block title %}GRN Form - ERP System{% endblock %}
+
 {% block content %}
-<div class="container">
-  <h2 class="page-title">GRN Form</h2>
-  <div class="form-container" style="max-height: 70vh; overflow-y: auto; padding-right: 15px;">
-    <form method="post" novalidate>
-      {% csrf_token %}
-      {% if message %}
-      <div class="alert alert-success">{{ message|striptags }}</div>
-      {% endif %}
-      {% if errors %}
-      <div class="alert alert-danger">{{ errors|striptags }}</div>
-      {% endif %}
-      {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {{ form.non_field_errors|striptags }}
-      </div>
-      {% endif %}
-      {% for field in form %}
-      <div class="form-group">
-        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        <div style="display: flex; gap: 10px; align-items: center;">
-          {{ field }}
-          {% if field.name == 'area' or field.name == 'po' or field.name == 'item' %}
-          <button type="button" class="btn btn-primary btn-sm" onclick="openLookup('{{ field.name }}')">
-            <i class="fa fa-search"></i> Search
-          </button>
-          {% endif %}
+<link rel="stylesheet" href="{% static 'css/lookup-modal.css' %}">
+<div class="max-w-5xl mx-auto">
+  <div class="page-header">
+    <h2 class="page-title">Goods Receipt Note (GRN)</h2>
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if message %}
+    <div class="p-4 mb-6 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200">{{ message|striptags }}
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">{{ errors|striptags }}</div>
+    {% endif %}
+    {% if form.non_field_errors %}
+    <div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">
+      {{ form.non_field_errors|striptags }}
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="card-body p-8">
+
+        <!-- Transaction Info -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-info-circle"></i> Transaction Info</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'transaction_date,status' %}
+            <div class="form-group">
+              {{ field }}
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        {% if field.errors %}
-        <div class="text-danger">{{ field.errors|striptags }}</div>
-        {% endif %}
+
+        <!-- Parties -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-handshake"></i> Parties</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'supplier,area' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.name == 'supplier' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="supplier" title="Search Supplier">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% elif field.name == 'area' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="area" title="Search Area">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% endif %}
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- References -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-file-alt"></i> References</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for field in form %}
+            {% if field.name in 'po,client_po,gpo' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.name == 'po' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="purchase_order" data-field-id="id_po" title="Search Purchase Order">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% elif field.name == 'client_po' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="purchase_order" data-field-id="id_client_po" title="Search Purchase Order">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% elif field.name == 'gpo' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="purchase_order" data-field-id="id_gpo" title="Search Purchase Order">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% endif %}
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Item Details -->
+        <div class="form-section mb-0">
+          <h4 class="form-section-title"><i class="fas fa-boxes"></i> Item Details</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'item,quantity,rate,amount' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.name == 'item' %}
+                <button type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  data-lookup-model="item" data-field-id="id_item" title="Search Item">
+                  <i class="fa fa-search"></i>
+                </button>
+                {% endif %}
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
       </div>
-      {% endfor %}
-      <button type="submit" class="submit-button"><i class="fas fa-check-circle"></i> Submit</button>
-    </form>
-  </div>
+    </div>
+
+    {% include 'form_actions.html' with save_label="Submit GRN" %}
+  </form>
 </div>
 
-<!-- Lookup Modal -->
-<div id="lookupModal" class="modal" style="display: none;">
-  <div class="modal-content" style="width: 80%; max-width: 800px;">
-    <div class="modal-header">
-      <h3 id="modalTitle">Search</h3>
-      <span class="close" onclick="closeLookup()">&times;</span>
-    </div>
-    <div class="modal-body">
-      <input type="text" id="searchInput" class="form-control" placeholder="Type to search..." onkeyup="filterTable()">
-      <div style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
-        <table class="table" id="lookupTable">
-          <thead>
-            <tr id="tableHeader"></tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-.modal {
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  overflow: auto;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 0;
-  border: 1px solid #888;
-  border-radius: 8px;
-}
-
-.modal-header {
-  padding: 15px;
-  background-color: #007bff;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 8px 8px 0 0;
-}
-
-.modal-body {
-  padding: 20px;
-}
-
-.close {
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover {
-  color: #ddd;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.table th, .table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.table th {
-  background-color: #f8f9fa;
-  font-weight: bold;
-}
-
-.table tbody tr:hover {
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-</style>
-
+<script src="{% static 'js/lookup-modal.js' %}"></script>
 <script>
-let currentField = '';
-let allData = [];
-
-function openLookup(fieldName) {
-  currentField = fieldName;
-  document.getElementById('lookupModal').style.display = 'block';
-  document.getElementById('searchInput').value = '';
-  
-  if (fieldName === 'area') {
-    document.getElementById('modalTitle').textContent = 'Search Area';
-    fetch('/inventory/lookup_area/')
-      .then(response => response.json())
-      .then(data => {
-        allData = data;
-        displayTable(data, ['id', 'areacode', 'areaname', 'area_description']);
-      })
-      .catch(err => console.error('Error fetching areas:', err));
-  } else if (fieldName === 'po') {
-    document.getElementById('modalTitle').textContent = 'Search PO';
-    fetch('/inventory/lookup_po/')
-      .then(response => response.json())
-      .then(data => {
-        allData = data;
-        displayTable(data, ['id', 'po_number', 'supplier', 'po_date']);
-      })
-      .catch(err => console.error('Error fetching POs:', err));
-  } else if (fieldName === 'item') {
-    document.getElementById('modalTitle').textContent = 'Search Item';
-    fetch('/inventory/lookup_item/')
-      .then(response => response.json())
-      .then(data => {
-        allData = data;
-        displayTable(data, ['id', 'item_code', 'item_description', 'category']);
-      })
-      .catch(err => console.error('Error fetching items:', err));
-  }
-}
-
-function closeLookup() {
-  document.getElementById('lookupModal').style.display = 'none';
-}
-
-function displayTable(data, columns) {
-  const headerRow = document.getElementById('tableHeader');
-  const tbody = document.getElementById('tableBody');
-  
-  headerRow.innerHTML = '';
-  tbody.innerHTML = '';
-  
-  // Create headers
-  columns.forEach(col => {
-    const th = document.createElement('th');
-    th.textContent = col.replace('_', ' ').toUpperCase();
-    headerRow.appendChild(th);
-  });
-  
-  // Create rows
-  data.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.onclick = () => selectItem(item.id);
-    
-    columns.forEach(col => {
-      const td = document.createElement('td');
-      td.textContent = item[col] || '';
-      tr.appendChild(td);
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lookupModals = window.lookupModals || {};
+    window.lookupModals.area = new LookupModal({
+      endpoint: '/inventory/lookup_area/',
+      model: 'area',
+      fieldId: 'id_area',
+      columns: ['id', 'areacode', 'areaname', 'area_description'],
+      title: 'Search Area'
     });
-    
-    tbody.appendChild(tr);
+    window.lookupModals.supplier = new LookupModal({
+      endpoint: '/inventory/lookup_supplier/',
+      model: 'supplier',
+      fieldId: 'id_supplier',
+      columns: ['id', 'supplier_name', 'contact_person_name', 'contact_email', 'contact_phone'],
+      title: 'Search Supplier'
+    });
+    window.lookupModals.purchase_order = new LookupModal({
+      endpoint: '/inventory/lookup_purchase_order/',
+      model: 'purchase_order',
+      fieldId: 'id_po',
+      columns: ['id', 'po_number', 'supplier__supplier_name', 'requisition__doc_number'],
+      title: 'Search Purchase Order'
+    });
+    window.lookupModals.item = new LookupModal({
+      endpoint: '/inventory/lookup_item/',
+      model: 'item',
+      fieldId: 'id_item',
+      columns: ['id', 'item_code', 'item_name', 'specification', 'unit_of_measure', 'item_category__name'],
+      title: 'Search Item'
+    });
+    window.lookupModals.purchase_order_client_po = new LookupModal({
+      endpoint: '/inventory/lookup_purchase_order/',
+      model: 'purchase_order_client_po',
+      fieldId: 'id_client_po',
+      columns: ['id', 'po_number', 'supplier__supplier_name', 'requisition__doc_number'],
+      title: 'Search Purchase Order'
+    });
+    window.lookupModals.purchase_order_gpo = new LookupModal({
+      endpoint: '/inventory/lookup_purchase_order/',
+      model: 'purchase_order_gpo',
+      fieldId: 'id_gpo',
+      columns: ['id', 'po_number', 'supplier__supplier_name', 'requisition__doc_number'],
+      title: 'Search Purchase Order'
+    });
   });
-}
-
-function selectItem(id) {
-  const selectElement = document.querySelector(`select[name="${currentField}"]`);
-  if (selectElement) {
-    selectElement.value = id;
-  }
-  closeLookup();
-}
-
-function filterTable() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  
-  const filteredData = allData.filter(item => {
-    return Object.values(item).some(val => 
-      String(val).toLowerCase().includes(searchTerm)
-    );
-  });
-  
-  if (currentField === 'area') {
-    displayTable(filteredData, ['id', 'areacode', 'areaname', 'area_description']);
-  } else if (currentField === 'po') {
-    displayTable(filteredData, ['id', 'po_number', 'supplier', 'po_date']);
-  } else if (currentField === 'item') {
-    displayTable(filteredData, ['id', 'item_code', 'item_description', 'category']);
-  }
-}
-
-// Close modal when clicking outside
-window.onclick = function(event) {
-  const modal = document.getElementById('lookupModal');
-  if (event.target == modal) {
-    closeLookup();
-  }
-}
 </script>
 {% endblock %}

@@ -8,9 +8,7 @@ Definition {% endblock %} {% block content %}
       <div class="alert alert-success">{{ message |striptags }}</div>
       {% endif %} {% for field in form %}
       <div class="form-group">
-        <label class="form-label" for="{{ field.id_for_label }}"
-          >{{ field.label }}</label
-        >
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }} {% if field.error %}
         <div class="text-danger">{{ field.error|striptags }}</div>
         {% endif %}
@@ -19,7 +17,7 @@ Definition {% endblock %} {% block content %}
       <div class="alert alert-danger">{{ errors |striptags }}</div>
       {% endif %}
 
-      <button type="submit" class="submit-button"><i class="fas fa-save"></i> Submit</button>
+      {% include 'form_actions.html' with save_label="Save Department" %}
     </form>
   </div>
 </div>

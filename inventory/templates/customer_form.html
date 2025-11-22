@@ -27,7 +27,7 @@
         {% endif %}
       </div>
       {% endfor %}
-      <button type="submit" class="submit-button"><i class="fas fa-save"></i> Submit</button>
+      {% include 'form_actions.html' with save_label="Save Customer" %}
     </form>
   </div>
 </div>

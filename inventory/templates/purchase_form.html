@@ -4,43 +4,103 @@
 {% block title %}Purchase Form - ERP System{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="page-title">Purchase Form</h2>
-    <div class="form-container">
-        <form method="post" novalidate>
-            {% csrf_token %}
-
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message |striptags }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            {% for field in form %}
-                <div class="form-group">
-                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% if field.errors %}
-                        <div class="text-danger">
-                            {{ field.errors|striptags }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger">
-                    {{ form.non_field_errors|striptags }}
-                </div>
-            {% endif %}
-
-            <button type="submit" class="submit-button"><i class="fas fa-cart-plus"></i> Submit Purchase</button>
-        </form>
+<link rel="stylesheet" href="{% static 'css/lookup-modal.css' %}">
+<div class="max-w-5xl mx-auto">
+    <div class="page-header">
+        <h2 class="page-title">Purchase Management</h2>
     </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if messages %}
+        {% for message in messages %}
+        <div
+            class="p-4 mb-6 rounded-lg {% if message.tags == 'success' %}bg-emerald-50 text-emerald-800 border border-emerald-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+            {{ message |striptags }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="card">
+            <div class="card-body p-8">
+                <!-- Order Details -->
+                <div class="form-section">
+                    <h4 class="form-section-title"><i class="fas fa-shopping-bag"></i> Order Details</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for field in form %}
+                        {% if field.name in 'supplier,purchase_date,status' %}
+                        <div class="form-group">
+                            <div class="relative">
+                                {{ field }}
+                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.name == 'supplier' %}
+                                <button type="button"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                                    data-lookup-model="supplier" title="Search Supplier">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                            {% if field.errors %}
+                            <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Financials -->
+                <div class="form-section">
+                    <h4 class="form-section-title"><i class="fas fa-money-bill-wave"></i> Financials</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for field in form %}
+                        {% if field.name in 'total_amount,currency' %}
+                        <div class="form-group">
+                            {{ field }}
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if field.errors %}
+                            <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% if field.errors %}
+                        <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 </div>
+
+{% if form.non_field_errors %}
+<div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">
+    {{ form.non_field_errors|striptags }}
+</div>
+{% endif %}
+
+<div class="flex justify-end mt-8 pt-4 border-t border-gray-100">
+    <button type="submit" class="btn btn-primary px-8 py-2.5">
+        <i class="fas fa-save"></i> Submit Purchase
+    </button>
+</div>
+</form>
+</div>
+
+<script src="{% static 'js/lookup-modal.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.lookupModals = window.lookupModals || {};
+        window.lookupModals.supplier = new LookupModal({
+            endpoint: '/inventory/lookup_supplier/',
+            model: 'supplier',
+            fieldId: 'id_supplier',
+            columns: ['id', 'supplier_name', 'contact_person_name', 'contact_email', 'contact_phone'],
+            title: 'Search Supplier'
+        });
+    });
+</script>
 {% endblock %}

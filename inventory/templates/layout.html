@@ -1,263 +1,168 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}ERP System{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/professional-forms.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-      body { @apply bg-gradient-to-br from-gray-50 to-gray-100; }
-      .nav-group.expanded .group-links { @apply block; }
-      .nav-group.expanded .arrow { transform: rotate(90deg); }
-      
-      /* Form Container Styles */
-      .container {
-        @apply max-w-6xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 p-8;
-      }
-      
-      .page-title {
-        @apply text-3xl font-bold text-gray-800 mb-8 pb-4;
-      }
-      
-      .form-container {
-        @apply space-y-6;
-      }
-      
-      .form-group {
-        @apply space-y-2;
-      }
-      
-      .form-label {
-        @apply block text-sm font-semibold text-gray-700 uppercase tracking-wide;
-      }
-      
-      .form-control {
-        @apply w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-300 transition duration-200 bg-white hover:border-gray-300 hover:bg-gray-50;
-      }
-      
-      .form-control:focus {
-        @apply shadow-sm bg-white;
-      }
-      
-      .form-control::placeholder {
-        @apply text-gray-400;
-      }
-      
-      .helptext {
-        @apply text-xs text-gray-500 mt-1 italic;
-      }
-      
-      .submit-button {
-        @apply px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 cursor-pointer uppercase tracking-widest text-sm mt-8 border-none flex items-center justify-center gap-3 relative overflow-hidden group;
-      }
-      
-      .submit-button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
-      }
-      
-      .submit-button:hover::before {
-        left: 100%;
-      }
-      
-      .submit-button:hover {
-        @apply shadow-2xl;
-      }
-      
-      .submit-button i {
-        @apply text-lg;
-      }
-      
-      .btn {
-        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200;
-      }
-      
-      .btn-primary {
-        @apply bg-blue-500 text-white hover:bg-blue-600 shadow-md hover:shadow-lg;
-      }
-      
-      .btn-sm {
-        @apply px-3 py-1.5 text-xs;
-      }
-      
-      .alert {
-        @apply p-4 rounded-lg border font-medium mb-6;
-      }
-      
-      .alert-success {
-        @apply bg-green-50 text-green-800 border-green-300;
-      }
-      
-      .alert-danger {
-        @apply bg-red-50 text-red-800 border-red-300;
-      }
-      
-      .alert-warning {
-        @apply bg-yellow-50 text-yellow-800 border-yellow-300;
-      }
-      
-      .text-danger {
-        @apply text-red-600 text-xs mt-1;
-      }
-      
-      .success {
-        @apply bg-green-50 text-green-800 border border-green-300 rounded-lg p-4 mb-6;
-      }
-      
-      /* Form Layout */
-      .form-container form {
-        @apply grid grid-cols-1 md:grid-cols-3 gap-4;
-      }
-      
-      .form-group {
-        @apply md:col-span-1;
-      }
-      
-      .form-container form > .alert,
-      .form-container form > .submit-button,
-      .form-container form > .success {
-        @apply md:col-span-3;
-      }
-      
-      /* Table Styles */
-      table {
-        @apply w-full border-collapse;
-      }
-      
-      thead {
-        @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white;
-      }
-      
-      th {
-        @apply px-4 py-3 text-left font-semibold text-sm uppercase tracking-wide;
-      }
-      
-      tbody tr {
-        @apply border-b border-gray-200 hover:bg-blue-50 transition-colors;
-      }
-      
-      td {
-        @apply px-4 py-3 text-sm text-gray-700;
-      }
-      
-      tbody tr:last-child {
-        @apply border-b-2 border-gray-300;
-      }
-    </style>
-    {% block styles %} {% endblock %} {% block scripts %} {% endblock %}
-  </head>
-  <body class="flex flex-col min-h-screen">
-    <!-- Top Navigation Bar -->
-    <nav class="bg-white border-b border-gray-200 shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
-      <a href="/" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
-        <i class="fas fa-box-open mr-2"></i>ERP System
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}ERP System{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'css/modern-erp.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Minimal overrides if needed */
+    body {
+      @apply bg-slate-50;
+    }
+  </style>
+  {% block styles %} {% endblock %} {% block scripts %} {% endblock %}
+</head>
+
+<body class="flex flex-col min-h-screen">
+  <!-- Top Navigation Bar -->
+  <nav class="bg-white border-b border-gray-200 shadow-sm h-14 flex items-center px-6 sticky top-0 z-50">
+    <a href="/" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
+      <i class="fas fa-box-open mr-2"></i>ERP System
+    </a>
+    <div class="ml-auto">
+      <a href="/admin/"
+        class="text-sm text-gray-600 hover:text-blue-600 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100">
+        <i class="fas fa-cog mr-1"></i>Admin
       </a>
-      <div class="ml-auto">
-        <a href="/admin/" class="text-sm text-gray-600 hover:text-blue-600 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100">
-          <i class="fas fa-cog mr-1"></i>Admin
-        </a>
+    </div>
+  </nav>
+
+  <!-- Main Container with Vertical Sidebar -->
+  <div class="flex flex-1 overflow-hidden pt-14 -mt-14">
+    <!-- Vertical Left Navigation Bar -->
+    <nav
+      class="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white fixed left-0 top-14 bottom-0 overflow-y-auto shadow-xl">
+      <div class="p-4">
+        <ul class="space-y-1">
+          <li class="nav-group" id="nav-group-inventory">
+            <button
+              class="group-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-all duration-200 font-semibold text-sm uppercase tracking-wider border-b border-slate-700 hover:border-slate-600 cursor-pointer">
+              <span class="flex items-center">
+                <i class="fas fa-cube mr-3"></i>Inventory
+              </span>
+              <span class="arrow text-xs transition-transform duration-200">▶</span>
+            </button>
+            <ul class="group-links hidden pl-4 mt-2 space-y-1">
+              <!-- Setup Group -->
+              <li class="nav-group" id="nav-group-setup">
+                <button
+                  class="group-toggle w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm font-medium cursor-pointer">
+                  <span class="flex items-center">
+                    <i class="fas fa-wrench mr-2 text-xs"></i>Setup
+                  </span>
+                  <span class="arrow text-xs transition-transform duration-200">▶</span>
+                </button>
+                <ul class="group-links hidden pl-4 mt-1 space-y-1">
+                  <li><a href="{% url 'customer_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-user mr-2 text-xs text-blue-400"></i>Customer Form</a></li>
+                  <li><a href="{% url 'supplier_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-handshake mr-2 text-xs text-blue-400"></i>Supplier Form</a></li>
+                  <li><a href="{% url 'purchase_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-shopping-cart mr-2 text-xs text-blue-400"></i>Purchase Form</a></li>
+                  <li><a href="{% url 'inv_category' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-list mr-2 text-xs text-blue-400"></i>Inventory Category</a></li>
+                  <li><a href="{% url 'area_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-map-marker mr-2 text-xs text-blue-400"></i>Area Form</a></li>
+                  <li><a href="{% url 'department_definition' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-building mr-2 text-xs text-blue-400"></i>Department Definition</a></li>
+                  <li><a href="{% url 'item_definition' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-boxes mr-2 text-xs text-blue-400"></i>Item Definition</a></li>
+                </ul>
+              </li>
+              <!-- Transactions Group -->
+              <li class="nav-group mt-2" id="nav-group-transactions">
+                <button
+                  class="group-toggle w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm font-medium cursor-pointer">
+                  <span class="flex items-center">
+                    <i class="fas fa-exchange-alt mr-2 text-xs"></i>Transactions
+                  </span>
+                  <span class="arrow text-xs transition-transform duration-200">▶</span>
+                </button>
+                <ul class="group-links hidden pl-4 mt-1 space-y-1">
+                  <li><a href="{% url 'requisition_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-file-alt mr-2 text-xs text-green-400"></i>Requisition Form</a></li>
+                  <li><a href="{% url 'purchase_order_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-receipt mr-2 text-xs text-green-400"></i>Purchase Order Form</a></li>
+                  <li><a href="{% url 'receipttransaction_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-inbox mr-2 text-xs text-green-400"></i>Receipt Transaction Form</a></li>
+                  <li><a href="{% url 'purchasevoucher_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-credit-card mr-2 text-xs text-green-400"></i>Purchase Voucher Form</a></li>
+                  <li><a href="{% url 'lottransaction_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-barcode mr-2 text-xs text-green-400"></i>Lot Transaction Form</a></li>
+                  <li><a href="{% url 'issuetransaction_form' %}"
+                      class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i
+                        class="fas fa-arrow-right mr-2 text-xs text-green-400"></i>Issue Transaction Form</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </nav>
 
-    <!-- Main Container with Vertical Sidebar -->
-    <div class="flex flex-1 overflow-hidden pt-14 -mt-14">
-      <!-- Vertical Left Navigation Bar -->
-      <nav class="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white fixed left-0 top-14 bottom-0 overflow-y-auto shadow-xl">
-        <div class="p-4">
-          <ul class="space-y-1">
-            <li class="nav-group">
-              <button class="group-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-slate-700 transition-all duration-200 font-semibold text-sm uppercase tracking-wider border-b border-slate-700 hover:border-slate-600 cursor-pointer">
-                <span class="flex items-center">
-                  <i class="fas fa-cube mr-3"></i>Inventory
-                </span>
-                <span class="arrow text-xs transition-transform duration-200">▶</span>
-              </button>
-              <ul class="group-links hidden pl-4 mt-2 space-y-1">
-                <!-- Setup Group -->
-                <li class="nav-group">
-                  <button class="group-toggle w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm font-medium cursor-pointer">
-                    <span class="flex items-center">
-                      <i class="fas fa-wrench mr-2 text-xs"></i>Setup
-                    </span>
-                    <span class="arrow text-xs transition-transform duration-200">▶</span>
-                  </button>
-                  <ul class="group-links hidden pl-4 mt-1 space-y-1">
-                    <li><a href="{% url 'customer_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-user mr-2 text-xs text-blue-400"></i>Customer Form</a></li>
-                    <li><a href="{% url 'supplier_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-handshake mr-2 text-xs text-blue-400"></i>Supplier Form</a></li>
-                    <li><a href="{% url 'purchase_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-shopping-cart mr-2 text-xs text-blue-400"></i>Purchase Form</a></li>
-                    <li><a href="{% url 'inv_category' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-list mr-2 text-xs text-blue-400"></i>Inventory Category</a></li>
-                    <li><a href="{% url 'area_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-map-marker mr-2 text-xs text-blue-400"></i>Area Form</a></li>
-                    <li><a href="{% url 'department_definition' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-building mr-2 text-xs text-blue-400"></i>Department Definition</a></li>
-                    <li><a href="{% url 'item_definition' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-boxes mr-2 text-xs text-blue-400"></i>Item Definition</a></li>
-                  </ul>
-                </li>
-                <!-- Transactions Group -->
-                <li class="nav-group mt-2">
-                  <button class="group-toggle w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-slate-700 transition-all duration-200 text-sm font-medium cursor-pointer">
-                    <span class="flex items-center">
-                      <i class="fas fa-exchange-alt mr-2 text-xs"></i>Transactions
-                    </span>
-                    <span class="arrow text-xs transition-transform duration-200">▶</span>
-                  </button>
-                  <ul class="group-links hidden pl-4 mt-1 space-y-1">
-                    <li><a href="{% url 'requisition_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-file-alt mr-2 text-xs text-green-400"></i>Requisition Form</a></li>
-                    <li><a href="{% url 'purchase_order_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-receipt mr-2 text-xs text-green-400"></i>Purchase Order Form</a></li>
-                    <li><a href="{% url 'receipttransaction_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-inbox mr-2 text-xs text-green-400"></i>Receipt Transaction Form</a></li>
-                    <li><a href="{% url 'purchasevoucher_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-credit-card mr-2 text-xs text-green-400"></i>Purchase Voucher Form</a></li>
-                    <li><a href="{% url 'lottransaction_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-barcode mr-2 text-xs text-green-400"></i>Lot Transaction Form</a></li>
-                    <li><a href="{% url 'issuetransaction_form' %}" class="block px-4 py-2 text-sm rounded-lg hover:bg-slate-700 transition-colors duration-150 flex items-center"><i class="fas fa-arrow-right mr-2 text-xs text-green-400"></i>Issue Transaction Form</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 overflow-auto">
+      <div class="p-6">
+        {% block content %} {% endblock %}
+      </div>
+    </main>
+  </div>
 
-      <!-- Main Content -->
-      <main class="flex-1 ml-64 overflow-auto">
-        <div class="p-6">
-          {% block content %} {% endblock %}
-        </div>
-      </main>
-    </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggles = document.querySelectorAll(".group-toggle");
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const toggles = document.querySelectorAll(".group-toggle");
-        toggles.forEach((toggle) => {
-          toggle.addEventListener("click", function (event) {
-            event.stopPropagation();
-            const group = this.closest(".nav-group");
-            if (!group) return;
-            
-            group.classList.toggle("expanded");
+      // Restore state from localStorage
+      document.querySelectorAll(".nav-group").forEach(group => {
+        if (group.id) {
+          const isExpanded = localStorage.getItem(group.id) === 'true';
+          if (isExpanded) {
+            group.classList.add("expanded");
             const groupLinks = group.querySelector(".group-links");
-            if (groupLinks) {
-              groupLinks.classList.toggle("hidden");
-            }
-            
-            // Reset nested groups
-            const nestedGroups = group.querySelectorAll(".nav-group");
-            nestedGroups.forEach((nestedGroup) => {
-              if (nestedGroup !== group) {
-                nestedGroup.classList.remove("expanded");
-                const nested = nestedGroup.querySelector(".group-links");
-                if (nested) nested.classList.add("hidden");
-              }
-            });
-          });
+            if (groupLinks) groupLinks.classList.remove("hidden");
+          }
+        }
+      });
+
+      toggles.forEach((toggle) => {
+        toggle.addEventListener("click", function (event) {
+          event.stopPropagation();
+          const group = this.closest(".nav-group");
+          if (!group) return;
+
+          group.classList.toggle("expanded");
+          const groupLinks = group.querySelector(".group-links");
+          if (groupLinks) {
+            groupLinks.classList.toggle("hidden");
+          }
+
+          // Save state to localStorage
+          if (group.id) {
+            const isExpanded = group.classList.contains("expanded");
+            localStorage.setItem(group.id, isExpanded);
+          }
         });
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

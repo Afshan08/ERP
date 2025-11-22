@@ -18,7 +18,8 @@ class IssueTransactionForm(forms.ModelForm):
         widgets = {
             'transaction_no': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter transaction number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., ISS-0001)'
             }),
             'date': forms.DateInput(attrs={
                 'class': 'form-control',

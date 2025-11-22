@@ -17,7 +17,8 @@ class PurchaseVoucherForm(forms.ModelForm):
         widgets = {
             'transaction_no': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter transaction number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., PV-0001)'
             }),
             'transaction_type': forms.Select(attrs={
                 'class': 'form-control'

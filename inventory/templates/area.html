@@ -4,39 +4,46 @@
 {% block title %}Area Form - ERP System{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="page-title">Area Forms</h2>
-    <div class="form-container">
-        <form method="post" novalidate>
-            {% csrf_token %}
-
-            {% if message %}
-                <div class="alert alert-success">
-                    {{ message |striptags }}
-                </div>
-            {% endif %}
-            
-            {% for field in form %}
-                <div class="form-group">
-                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.error %}
-                        <div class="text-danger">
-                            {{ field.error|striptags }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            
-            {% if errors %}
-                <div class="alert alert-danger">
-                    {{ errors |striptags }}
-                </div>
-            {% endif %}
-            
-            <button type="submit" class="submit-button"><i class="fas fa-save"></i> Submit</button>
-        </form>
+<div class="max-w-5xl mx-auto">
+    <div class="page-header">
+        <h2 class="page-title">Area Management</h2>
     </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if message %}
+        <div class="p-4 mb-6 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200">
+            {{ message |striptags }}
+        </div>
+        {% endif %}
+
+        {% if errors %}
+        <div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">
+            {{ errors |striptags }}
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <div class="card-body p-8">
+                <div class="form-section mb-0">
+                    <h4 class="form-section-title"><i class="fas fa-map-marker-alt"></i> Area Details</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for field in form %}
+                        <div class="form-group">
+                            {{ field }}
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if field.errors %}
+                            <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'form_actions.html' with save_label="Save Area" %}
+    </form>
 </div>
 {% endblock %}
-

@@ -19,7 +19,8 @@ class LotTransactionForm(forms.ModelForm):
         widgets = {
             'doc_no': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter document number'
+                'readonly': 'readonly',
+                'placeholder': 'Auto-generated (e.g., LOT-0001)'
             }),
             'date': forms.DateInput(attrs={
                 'class': 'form-control',
