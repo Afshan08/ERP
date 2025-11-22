@@ -1,34 +1,122 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block title %}Customer Form - ERP System{% endblock %}
+
 {% block content %}
-<div class="container">
-  <h2 class="page-title">Customer Form</h2>
-  <div class="form-container" style="max-height: 70vh; overflow-y: auto; padding-right: 15px;">
-    <form method="post" novalidate>
-      {% csrf_token %}
-      {% if message %}
-      <div class="alert alert-success">{{ message|striptags }}</div>
-      {% endif %}
-      {% if errors %}
-      <div class="alert alert-danger">{{ errors|striptags }}</div>
-      {% endif %}
-      {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {{ form.non_field_errors|striptags }}
-      </div>
-      {% endif %}
-      {% for field in form %}
-      <div class="form-group">
-        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {% if field.errors %}
-        <div class="text-danger">{{ field.errors|striptags }}</div>
-        {% endif %}
-      </div>
-      {% endfor %}
-      {% include 'form_actions.html' with save_label="Save Customer" %}
-    </form>
+<div class="max-w-5xl mx-auto">
+  <div class="page-header">
+    <h2 class="page-title">Customer Form</h2>
   </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if message %}
+    <div class="p-4 mb-6 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200">{{ message|striptags }}
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">{{ errors|striptags }}</div>
+    {% endif %}
+    {% if form.non_field_errors %}
+    <div class="p-4 mb-6 rounded-lg bg-red-50 text-red-800 border border-red-200">
+      {{ form.non_field_errors|striptags }}
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="card-body p-8">
+
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-building"></i> Basic Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'customer_code,customer_name,customer_type,country' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Contact Details -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-address-card"></i> Contact Details</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'contact_person_name,contact_email,contact_phone,website' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Financial Settings -->
+        <div class="form-section">
+          <h4 class="form-section-title"><i class="fas fa-coins"></i> Financial Settings</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'payment_terms,currency' %}
+            <div class="form-group">
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Status & Notes -->
+        <div class="form-section mb-0">
+          <h4 class="form-section-title"><i class="fas fa-info-circle"></i> Status & Notes</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for field in form %}
+            {% if field.name in 'status,is_preferred,notes' %}
+            <div class="form-group {% if field.name == 'notes' %}md:col-span-2{% endif %}">
+              {% if field.name == 'is_preferred' %}
+              <div class="flex items-center mt-4">
+                {{ field }}
+                <label class="ml-2 text-gray-700 font-medium" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% else %}
+              <div class="relative">
+                {{ field }}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% endif %}
+              {% if field.errors %}
+              <div class="text-sm text-red-600 mt-1 ml-1">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {% include 'form_actions.html' with save_label="Save Customer" %}
+  </form>
 </div>
 {% endblock %}
